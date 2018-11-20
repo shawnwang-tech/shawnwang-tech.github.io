@@ -115,7 +115,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-20T09:33:34.030Z">
+<meta property="og:updated_time" content="2018-11-20T14:34:17.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hello World">
 <meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
@@ -342,7 +342,7 @@
                 
               
 
-              <time title="Created: 2018-11-20 17:33:34" itemprop="dateCreated datePublished" datetime="2018-11-20T17:33:34+08:00">2018-11-20</time>
+              <time title="Created: 2018-11-20 22:34:17" itemprop="dateCreated datePublished" datetime="2018-11-20T22:34:17+08:00">2018-11-20</time>
             
 
             
@@ -397,6 +397,26 @@
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 <h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><p>$$<br>\begin{eqnarray}<br>\nabla\cdot\vec{E} &amp;=&amp; \frac{\rho}{\epsilon_0} \<br>\nabla\cdot\vec{B} &amp;=&amp; 0 \<br>\nabla\times\vec{E} &amp;=&amp; -\frac{\partial B}{\partial t} \<br>\nabla\times\vec{B} &amp;=&amp; \mu_0\left(\vec{J}+\epsilon_0\frac{\partial E}{\partial t} \right)<br>\end{eqnarray}<br>$$</p>
+<p>$$</p>
+<pre><code>\frac{\partial E}{\partial i^t_i} &amp;= \frac{\partial E}{\partial c^t_i} \cdot \frac{\partial c^t_i}{\partial i^t_i} 
+    &amp; \frac{\partial E}{\partial f^t_i} &amp;= \frac{\partial E}{\partial c^t_i} \cdot \frac{\partial c^t_i}{\partial f^t_i}\\
+
+      &amp;= \delta c^t_i \cdot a^t_i  
+    &amp; &amp;= \delta c^t_i \cdot c^{t-1}_i\\
+
+      \therefore \delta i^t &amp;= \delta c^t \odot a^t
+    &amp; \therefore \delta f^t &amp;= \delta c^t \odot c^{t-1}\\ \\
+
+      \frac{\partial E}{\partial a^t_i} &amp;= \frac{\partial E}{\partial c^t_i} \cdot \frac{\partial c^t_i}{\partial a^t_i}
+    &amp; \frac{\partial E}{\partial c^{t-1}_i} &amp;= \frac{\partial E}{\partial c^t_i} \cdot \frac{\partial c^t_i}{\partial c^{t-1}_i}\\
+
+      &amp;= \delta c^t_i \cdot i^t_i 
+    &amp; &amp;= \delta c^t_i \cdot f^t_i \\
+
+      \therefore \delta a^t &amp;= \delta c^t \odot i^t 
+    &amp; \therefore \delta c^{t-1} &amp;= \delta c^t \odot f^t 
+</code></pre><p>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">loss_list = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_loss</span><span class="params">(loss)</span>:</span></span><br><span class="line">    loss_len = len(loss_list)</span><br><span class="line">    x = torch.Tensor([loss_len])</span><br><span class="line">    loss_list.append(loss)</span><br><span class="line">    y = torch.Tensor([loss])</span><br><span class="line">    print(x, y)</span><br><span class="line">    vis.line(X=x, Y=y, win=<span class="string">'win1'</span>, update=<span class="string">'append'</span> <span class="keyword">if</span> loss_len&gt;<span class="number">0</span> <span class="keyword">else</span> <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">10</span>):</span><br><span class="line"></span><br><span class="line">    print(len(loss_list))</span><br><span class="line">    i = i ** <span class="number">3</span></span><br><span class="line">    show_loss(i)</span><br></pre></td></tr></table></figure>
 
       
     </div>
