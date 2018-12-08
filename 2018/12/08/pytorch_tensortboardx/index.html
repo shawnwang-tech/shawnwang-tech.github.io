@@ -117,7 +117,8 @@
 <meta property="og:description" content="PyTorch 可视化工具及调试利器 TensorboardXTensorboardX 与 visdom 的区别 TensorboardX 可以把多组实验数据横向比较，visdom 不行。visdom 更像是一个 web 版本的 matplotlib，缺乏像 TensorboardX 一样更高层的封装。例如想要在 visdom 中显示 loss 曲线，你可能要维护一个所有 loss 值的 list">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/15441670694829.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70">
-<meta property="og:updated_time" content="2018-12-08T15:29:52.807Z">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/15442852708370.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70">
+<meta property="og:updated_time" content="2018-12-08T16:10:17.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PyTorch 可视化工具及调试利器 TensorboardX">
 <meta name="twitter:description" content="PyTorch 可视化工具及调试利器 TensorboardXTensorboardX 与 visdom 的区别 TensorboardX 可以把多组实验数据横向比较，visdom 不行。visdom 更像是一个 web 版本的 matplotlib，缺乏像 TensorboardX 一样更高层的封装。例如想要在 visdom 中显示 loss 曲线，你可能要维护一个所有 loss 值的 list">
@@ -345,12 +346,24 @@
                 
               
 
-              <time title="Created: 2018-12-08 23:28:41 / Modified: 23:29:52" itemprop="dateCreated datePublished" datetime="2018-12-08T23:28:41+08:00">2018-12-08</time>
+              <time title="Created: 2018-12-08 23:28:41" itemprop="dateCreated datePublished" datetime="2018-12-08T23:28:41+08:00">2018-12-08</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-12-09 00:10:17" itemprop="dateModified" datetime="2018-12-09T00:10:17+08:00">2018-12-09</time>
               
             
           </span>
@@ -417,14 +430,16 @@
 <li>TensorboardX 可以看到网络结构，visdom 不行。对于深度学习初学者来说，简直不要更爽，神经网络结构如庖丁解牛一般呈现在你的面前。</li>
 </ul>
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
-<li>写 loss 的时候，要加上横轴的值，否则会出现不同的 epoch 叠加在一起的现象。</li>
+<li>写 loss 的时候，要加上横轴的值，否则会出现不同的 epoch 叠加在一起的现象。<a href="https://github.com/tensorflow/tensorboard/blob/master/README.md#im-seeing-data-overlapped-on-itself-what-gives" target="_blank" rel="noopener">data-overlapped</a>。需要借助一个 tranloss_list 全局变量实现。然后就可以得到完整的数据了</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">writer.add_scalar(&apos;train_loss&apos;, loss.item(), batch_idx*epoch)</span><br></pre></td></tr></table></figure>
-<p><img src="http://image.qiniu.shawnwang.tech/15441670694829.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tranloss_list.append(loss.item())</span><br><span class="line">writer.add_scalar(&apos;train_loss&apos;, loss.item(), len(tranloss_list))</span><br></pre></td></tr></table></figure>
+<p><img src="http://image.qiniu.shawnwang.tech/15441670694829.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70" alt="">}}</p>
+<p><img src="http://image.qiniu.shawnwang.tech/15442852708370.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70" alt=""></p>
 <h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><ul>
 <li>陈云《深度学习框架 PyTorch 入门与实践》</li>
 <li><a href="https://github.com/facebookresearch/visdom" target="_blank" rel="noopener">widsom</a></li>
 <li><a href="https://github.com/lanpa/tensorboardX" target="_blank" rel="noopener">tensorboardX</a></li>
+<li><a href="https://github.com/tensorflow/tensorboard/blob/master/README.md" target="_blank" rel="noopener">tensorboardX README</a></li>
 </ul>
 
       
