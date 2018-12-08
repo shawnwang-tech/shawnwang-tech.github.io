@@ -108,20 +108,27 @@
 
 
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="PyTorch 可视化工具及调试利器 TensorboardXTensorboardX 与 visdom 的区别 TensorboardX 可以把多组实验数据横向比较，visdom 不行。visdom 更像是一个 web 版本的 matplotlib，缺乏像 TensorboardX 一样更高层的封装。例如想要在 visdom 中显示 loss 曲线，你可能要维护一个所有 loss 值的 list">
+<meta name="keywords" content="PyTorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch 可视化工具及调试利器 TensorboardX">
+<meta property="og:url" content="http://yoursite.com/2018/12/08/pytorch_tensortboardx/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="PyTorch 可视化工具及调试利器 TensorboardXTensorboardX 与 visdom 的区别 TensorboardX 可以把多组实验数据横向比较，visdom 不行。visdom 更像是一个 web 版本的 matplotlib，缺乏像 TensorboardX 一样更高层的封装。例如想要在 visdom 中显示 loss 曲线，你可能要维护一个所有 loss 值的 list">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/15441670694829.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70">
+<meta property="og:updated_time" content="2018-12-08T15:29:52.807Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="PyTorch 可视化工具及调试利器 TensorboardX">
+<meta name="twitter:description" content="PyTorch 可视化工具及调试利器 TensorboardXTensorboardX 与 visdom 的区别 TensorboardX 可以把多组实验数据横向比较，visdom 不行。visdom 更像是一个 web 版本的 matplotlib，缺乏像 TensorboardX 一样更高层的封装。例如想要在 visdom 中显示 loss 曲线，你可能要维护一个所有 loss 值的 list">
+<meta name="twitter:image" content="http://image.qiniu.shawnwang.tech/15441670694829.jpg?imageMogr2/thumbnail/1024x/format/jpg/blur/1x0/quality/70">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2018/12/08/pytorch_tensortboardx/">
 
 
 
@@ -131,7 +138,7 @@
   };
 </script>
 
-  <title>Hexo</title>
+  <title>PyTorch 可视化工具及调试利器 TensorboardX | Hexo</title>
   
 
 
@@ -180,8 +187,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -218,7 +224,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
 
     
     
@@ -280,9 +286,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -314,10 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/12/08/pytorch_tensortboardx/" class="post-title-link" itemprop="http://yoursite.com/index.html">PyTorch 可视化工具及调试利器 TensorboardX</a>
+          <h1 class="post-title" itemprop="name headline">PyTorch 可视化工具及调试利器 TensorboardX
               
             
           </h1>
@@ -409,9 +412,7 @@
       
 
       
-        
-          
-            <h1 id="PyTorch-可视化工具及调试利器-TensorboardX"><a href="#PyTorch-可视化工具及调试利器-TensorboardX" class="headerlink" title="PyTorch 可视化工具及调试利器 TensorboardX"></a>PyTorch 可视化工具及调试利器 TensorboardX</h1><h2 id="TensorboardX-与-visdom-的区别"><a href="#TensorboardX-与-visdom-的区别" class="headerlink" title="TensorboardX 与 visdom 的区别"></a>TensorboardX 与 visdom 的区别</h2><ul>
+        <h1 id="PyTorch-可视化工具及调试利器-TensorboardX"><a href="#PyTorch-可视化工具及调试利器-TensorboardX" class="headerlink" title="PyTorch 可视化工具及调试利器 TensorboardX"></a>PyTorch 可视化工具及调试利器 TensorboardX</h1><h2 id="TensorboardX-与-visdom-的区别"><a href="#TensorboardX-与-visdom-的区别" class="headerlink" title="TensorboardX 与 visdom 的区别"></a>TensorboardX 与 visdom 的区别</h2><ul>
 <li>TensorboardX 可以把多组实验数据横向比较，visdom 不行。visdom 更像是一个 web 版本的 matplotlib，缺乏像 TensorboardX 一样更高层的封装。例如想要在 visdom 中显示 loss 曲线，你可能要维护一个所有 loss 值的 list （需要自己写一些辅助代码），每次显示整个 list。而 TensorboardX 中要做的只是 <code>writer.add_scalar</code></li>
 <li>TensorboardX 可以看到网络结构，visdom 不行。对于深度学习初学者来说，简直不要更爽，神经网络结构如庖丁解牛一般呈现在你的面前。</li>
 </ul>
@@ -426,8 +427,6 @@
 <li><a href="https://github.com/lanpa/tensorboardX" target="_blank" rel="noopener">tensorboardX</a></li>
 </ul>
 
-          
-        
       
     </div>
 
@@ -448,14 +447,20 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          
+        </div>
+      
+
+      
+      
+      
 
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -465,14 +470,22 @@
   </article>
 
 
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -493,8 +506,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -564,6 +586,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PyTorch-可视化工具及调试利器-TensorboardX"><span class="nav-number">1.</span> <span class="nav-text">PyTorch 可视化工具及调试利器 TensorboardX</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorboardX-与-visdom-的区别"><span class="nav-number">1.1.</span> <span class="nav-text">TensorboardX 与 visdom 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意"><span class="nav-number">1.2.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ref"><span class="nav-number">1.3.</span> <span class="nav-text">Ref</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -699,6 +737,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
 
   
 
@@ -714,42 +756,53 @@
   
 
   
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'http://yoursite.com/2018/12/08/pytorch_tensortboardx/';
+        this.page.identifier = '2018/12/08/pytorch_tensortboardx/';
+        this.page.title = 'PyTorch 可视化工具及调试利器 TensorboardX';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://shawnwang-tech.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
       
-        
+        loadComments();
       
-    
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
   
 
   
