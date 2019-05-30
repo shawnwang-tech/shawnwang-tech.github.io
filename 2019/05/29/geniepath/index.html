@@ -108,21 +108,40 @@
 
 
 
-  <meta name="keywords" content="Deep Learning, Graph Neural Network, Machine Learnning">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Deep Learner">
-<meta property="og:url" content="https://shawnwang.tech/index.html">
+  <meta name="description" content="GeniePath：自适应感受路径的图神经网络GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用">
+<meta name="keywords" content="PyTorch,GNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GeniePath：自适应感受路径的图神经网络">
+<meta property="og:url" content="https://shawnwang.tech/2019/05/29/geniepath/index.html">
 <meta property="og:site_name" content="Deep Learner">
+<meta property="og:description" content="GeniePath：自适应感受路径的图神经网络GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591839602150.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591857996169.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591860374794.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591860533237.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591881211273.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591884128930.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-397B5B49-D760-4D96-9D41-23114F54934B.png">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-61803B64-E193-4C1F-9686-40A47DB9D1FF.png">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-F5A6DF81-8E7A-4D88-9364-06CD930006C7.png">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-CE789FEA-A1C5-47EC-81BC-06C7A2FB1B28.png">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591955336710.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591954676998.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591954218348.jpg">
+<meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591954422407.jpg">
+<meta property="og:updated_time" content="2019-05-30T09:15:57.267Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Deep Learner">
+<meta name="twitter:title" content="GeniePath：自适应感受路径的图神经网络">
+<meta name="twitter:description" content="GeniePath：自适应感受路径的图神经网络GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用">
+<meta name="twitter:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591839602150.jpg">
 
 
 
 
 
 
-  <link rel="canonical" href="https://shawnwang.tech/">
+  <link rel="canonical" href="https://shawnwang.tech/2019/05/29/geniepath/">
 
 
 
@@ -132,7 +151,7 @@
   };
 </script>
 
-  <title>Deep Learner</title>
+  <title>GeniePath：自适应感受路径的图神经网络 | Deep Learner</title>
   
 
 
@@ -181,8 +200,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
-  page-home">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -219,7 +237,7 @@
         
         
           
-          <li class="menu-item menu-item-home menu-item-active">
+          <li class="menu-item menu-item-home">
 
     
     
@@ -281,9 +299,9 @@
           
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -315,10 +333,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/05/29/geniepath/" class="post-title-link" itemprop="https://shawnwang.tech/index.html">GeniePath：自适应感受路径的图神经网络</a>
+          <h1 class="post-title" itemprop="name headline">GeniePath：自适应感受路径的图神经网络
               
             
           </h1>
@@ -422,9 +437,7 @@
       
 
       
-        
-          
-            <h1 id="GeniePath：自适应感受路径的图神经网络"><a href="#GeniePath：自适应感受路径的图神经网络" class="headerlink" title="GeniePath：自适应感受路径的图神经网络"></a>GeniePath：自适应感受路径的图神经网络</h1><p>GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用来提取和过滤高阶邻域内汇聚的信息。在直推（transductive）和归纳（inductive）两种学习任务的实验中，均达到了 state-of-the-art 的效果。</p>
+        <h1 id="GeniePath：自适应感受路径的图神经网络"><a href="#GeniePath：自适应感受路径的图神经网络" class="headerlink" title="GeniePath：自适应感受路径的图神经网络"></a>GeniePath：自适应感受路径的图神经网络</h1><p>GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用来提取和过滤高阶邻域内汇聚的信息。在直推（transductive）和归纳（inductive）两种学习任务的实验中，均达到了 state-of-the-art 的效果。</p>
 <h2 id="图表示学习与图神经网络"><a href="#图表示学习与图神经网络" class="headerlink" title="图表示学习与图神经网络"></a>图表示学习与图神经网络</h2><p>图（Graph），或称为（网络，Network），是一种由对象（节点，node）和关系（连边，edge）构成的数据结构。 <a href="https://arxiv.org/pdf/1812.08434.pdf" target="_blank" rel="noopener">Graph Neural Networks: A Review of Methods and Applications</a> 生活中很多数据或系统可以被建模成图，例如社交网络，蛋白质-蛋白质交互网络，疾病传播网络，知识图谱等。图强大到建模和表达能力也吸引了越来越多的学者的关注。与我们熟知的基于格点（2D gird）的图像数据不同，图是非欧数据（non-Euclidean data），为了能够用神经网络进行运算，我们需要先得到节点和连边的一种向量表示，这项技术被称为图表示学习（graph representation learning），或者叫网络嵌入（network embedding），下文不做区分。</p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591839602150.jpg" alt=""></p>
 <p>受到到自然语言处理中 word2vec <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a> 的启发，诞生了 DeepWalk <a href="https://arxiv.org/abs/1403.6652" target="_blank" rel="noopener">Deepwalk: Online learning ofsocialrepresentations</a>、node2vec <a href="https://arxiv.org/abs/1607.00653" target="_blank" rel="noopener">node2vec: Scalable feature learning for networks</a>、LINE <a href="https://arxiv.org/abs/1503.03578" target="_blank" rel="noopener">LINE: Large-scale Information Network Embedding</a> 等网络嵌入算法，它们的思路是将节点类比为自然语言中的单词，在图上生成一些经过随机游走（Random Walk）产生的节点序列，把这些序列看成句子。类似于 word2vec 的思想，每个节点都可以用处于其上下文（context）的节点来表示，得到一个长度远小于图上节点数的低维稠密的实值向量。该向量编码了（encode） 图的结构信息，我们可以利用该向量做节点分类、链路预测等下游任务。</p>
@@ -463,8 +476,6 @@
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591954422407.jpg" alt=""></p>
 <p>GeniePath 的 PyTorch 复现，后续会发到 <a href="https://shawnwang.tech，" target="_blank" rel="noopener">https://shawnwang.tech，</a> <a href="https://github.com/shawnwang-tech/GeniePath-pytorch。" target="_blank" rel="noopener">https://github.com/shawnwang-tech/GeniePath-pytorch。</a> 感兴趣的朋友可以关注。</p>
 
-          
-        
       
     </div>
 
@@ -485,14 +496,22 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          
+            <a href="/tags/GNN/" rel="tag"># GNN</a>
+          
+        </div>
+      
+
+      
+      
+      
 
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -502,14 +521,22 @@
   </article>
 
 
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -530,8 +557,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -603,6 +639,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GeniePath：自适应感受路径的图神经网络"><span class="nav-number">1.</span> <span class="nav-text">GeniePath：自适应感受路径的图神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#图表示学习与图神经网络"><span class="nav-number">1.1.</span> <span class="nav-text">图表示学习与图神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变形卷积核"><span class="nav-number">1.2.</span> <span class="nav-text">可变形卷积核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Permutation-Invariant"><span class="nav-number">1.3.</span> <span class="nav-text">Permutation Invariant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GeniePath-Algorithm"><span class="nav-number">1.4.</span> <span class="nav-text">GeniePath Algorithm</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -747,6 +799,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
 
   
 
@@ -762,42 +818,53 @@
   
 
   
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://shawnwang.tech/2019/05/29/geniepath/';
+        this.page.identifier = '2019/05/29/geniepath/';
+        this.page.title = 'GeniePath：自适应感受路径的图神经网络';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://shawnwang-tech.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
       
-        
+        loadComments();
       
-    
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
   
 
   
