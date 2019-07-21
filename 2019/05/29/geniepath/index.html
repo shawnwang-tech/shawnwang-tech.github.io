@@ -130,7 +130,7 @@
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591954676998.jpg">
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591954218348.jpg">
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-05-30-15591954422407.jpg">
-<meta property="og:updated_time" content="2019-05-30T09:15:57.267Z">
+<meta property="og:updated_time" content="2019-07-21T10:11:03.240Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GeniePath：自适应感受路径的图神经网络">
 <meta name="twitter:description" content="GeniePath：自适应感受路径的图神经网络GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用">
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-05-30 17:15:57" itemprop="dateModified" datetime="2019-05-30T17:15:57+08:00">2019-05-30</time>
+                <time title="Modified: 2019-07-21 18:11:03" itemprop="dateModified" datetime="2019-07-21T18:11:03+08:00">2019-07-21</time>
               
             
           </span>
@@ -453,18 +453,18 @@
 <p>GeniePath 的作者可能是（论文中没有提到）受到了这篇文章的启发，将这个 idea 引入到了 Graph 中。提出了自适应感受野的 GNN 算法。但是该算法的并不是通过调整节点的领域来实现的，而将距离多跳（k-hop）的节点的信息存储在 LSTM 的 memory 中，由神经网络进行学习自动判断哪些信息对于自己完成下游任务是有利的，而进行提取和过滤。</p>
 <h2 id="Permutation-Invariant"><a href="#Permutation-Invariant" class="headerlink" title="Permutation Invariant"></a>Permutation Invariant</h2><p>这里提到了一个概念，排列不变性（permutation invariant）。这里[DeepSets: Modeling Permutation Invariance] (<a href="https://www.inference.vc/deepsets-modeling-permutation-invariance/" target="_blank" rel="noopener">https://www.inference.vc/deepsets-modeling-permutation-invariance/</a>) 给出了一个通俗的解释。</p>
 <p>$f(a, b, c)=f(a, c, b)=f(b, a, c)=\dots$ 同样的参数输入到函数中，它们的排列顺序并不影响结果。数据结构——集合（set）会用到这样的不变性，相应地，那些在建模中用到集合概念的问题都要遵循排列不变性，例如点云，多主体强化学习，图片场景中多个目标的集合等。在 DeepMind 文章 <a href="https://arxiv.org/abs/1904.12787" target="_blank" rel="noopener">Graph Matching Networks for Learning the Similarity of Graph Structured Objects</a> 中也有提到排序不变性。”In the past few years graph neural networks (GNNs) have emerged as an effective class of models for learning representations of structured data and for solving various supervised prediction problems on graphs. <strong><em>Such models are invariant to permutations of graph elements</em></strong> by design and compute graph node representations through a propagation process which iteratively aggregates local structural information. These node representations are then used directly for node classification, or pooled into a graph vector for graph classification.<br>“<br>本文在算法部分（Proposed Approaches）详细介绍了排列不变性。函数空间要满足图数据所需要的排列不变性。我们要学的是一个函数 f，将图 G 映射到嵌入 H。我们要假设的是该 f 具有排列不变性，学习任务与邻居节点的顺序是无关的。文中用下面公式来定义聚合（aggregator）函数 f 的这个性质，其中 sigma 表示的是任意的排列。</p>
-<p>$ \begin{array}{l}{f\left(\left{h_{1}, \ldots, h_{j}, \ldots\right} | j \in \mathcal{N}(i)\right)} \ {\quad=f\left(\left{h_{\sigma(1)}, \ldots, h_{\sigma(j)}, \ldots\right} | j \in \mathcal{N}(i)\right)}\end{array}$<br>然后提到了一个定理，当且仅当函数 f 可以被分解为 $\rho\left(\sum_{j \in \mathcal{N}(i)} \phi\left(h_{j}\right)\right)$ 其中 phi 和 rho 是两个映射。那么 f 是具有排列不变形的。并且两个具有排列不变形的函数的复合函数 $g \circ f$ 可以等价于 g(f(x))。也是满足排列不变性的，因此，我们可以将函数进行堆叠来设计神经网络。GraphSAGE 提供 LSTM 的聚合器，这种聚合器是不具有 Permutation Invariant 的，因为 LSTM 接收的是遍历节点的隐变量序列，排序是敏感的。此外，这里的 Permutation Invariant 也指图是静态的，不随时间演化。 因为文章中提到 “This is in opposition to temporal graphs.”</p>
-<h2 id="GeniePath-Algorithm"><a href="#GeniePath-Algorithm" class="headerlink" title="GeniePath Algorithm"></a>GeniePath Algorithm</h2><p>Adaptive Path Layer 是文章的核心内容，相比其他算法中使用事先定义好的路径（pre-defined paths），例如一阶邻居等，Adaptive Path Layer 目标是自学习感受路径，信号在学到的路径上传播。这个问题可以等效于学习每个节点的一个合理的子图，该子图包括两部分，广度方向上给出一阶邻居中节点的权重，深度方向上 t 跳范围内重要的邻居。自适应广度函数定义为 $\phi\left(A, H^{(t)} ; \Theta\right)$ 其中 theta 代表参数。H 代表的是节点的嵌入（或者叫隐状态表示）。自适应深度函数定义为，$\varphi\left({h_{i}^{(t)}}\left|\left{h_{i}^{(\tau)} | \tau \in{t-1, \ldots, 0}\right} ; \Phi\right)\right.$ 其中，Phi 代表参数。</p>
+<p>$\begin{array}{l}{f\left(\left{h_{1}, \ldots, h_{j}, \ldots\right} | j \in \mathcal{N}(i)\right)} \ {\quad=f\left(\left{h_{\sigma(1)}, \ldots, h_{\sigma(j)}, \ldots\right} | j \in \mathcal{N}(i)\right)}\end{array}<br>$。然后提到了一个定理，当且仅当函数 f 可以被分解为 $\rho\left(\sum_{j \in \mathcal{N}(i)} \phi\left(h_{j}\right)\right)<br>$ 其中 phi 和 rho 是两个映射。那么 f 是具有排列不变形的。并且两个具有排列不变形的函数的复合函数 $g \circ f$ 可以等价于 g(f(x))。也是满足排列不变性的，因此，我们可以将函数进行堆叠来设计神经网络。GraphSAGE 提供 LSTM 的聚合器，这种聚合器是不具有 Permutation Invariant 的，因为 LSTM 接收的是遍历节点的隐变量序列，排序是敏感的。此外，这里的 Permutation Invariant 也指图是静态的，不随时间演化。 因为文章中提到 “This is in opposition to temporal graphs.”</p>
+<h2 id="GeniePath-Algorithm"><a href="#GeniePath-Algorithm" class="headerlink" title="GeniePath Algorithm"></a>GeniePath Algorithm</h2><p>Adaptive Path Layer 是文章的核心内容，相比其他算法中使用事先定义好的路径（pre-defined paths），例如一阶邻居等，Adaptive Path Layer 目标是自学习感受路径，信号在学到的路径上传播。这个问题可以等效于学习每个节点的一个合理的子图，该子图包括两部分，广度方向上给出一阶邻居中节点的权重，深度方向上 t 跳范围内重要的邻居。自适应广度函数定义为 $\phi\left(A, H^{(t)} ; \Theta\right)$ 其中 theta 代表参数。H 代表的是节点的嵌入（或者叫隐状态表示）。自适应深度函数定义为，$\varphi\left({h_{i}^{(t)}}\left|\left{h_{i}^{(\tau)} | \tau \in{t-1, \ldots, 0}\right} ; \Phi\right)\right. $ 其中，Phi 代表参数。</p>
 <p>我们可以将本文和 GAT 或者 GraphSAGE 等常用的非频域的 GNN 框架的区别认为是在它们的基础上加了 memory（通过 LSTM 实现）。存储通过一阶邻域进行的信息传递得到的高阶领域节点的信息。所谓的自适应，自学习，其实就是通过 LSTM 的门对 LSTM 的 memory 所存储的高阶领域信息的提取和过滤 （分别对应遗忘门和输出门）所体现的。而一阶邻域和高阶领域的信息交互体现在 LSTM 的输入门。</p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-397B5B49-D760-4D96-9D41-23114F54934B.png" alt="397B5B49-D760-4D96-9D41-23114F54934B"></p>
 <p>注意，广度函数的输出的 H 上标是 tmp，只有将 H_tmp 再输入到深度函数中，才达到一个 epoch 的训练。</p>
-<p>$$ h_{i}^{(\mathrm{tmp})}=\tanh \left(W^{(t)^{\top}} \sum_{j \in \mathcal{N}(i) \cup{i}} \alpha\left(h_{i}^{(t)}, h_{j}^{(t)}\right) \cdot h_{j}^{(t)}\right) $$</p>
-<p>$$ \alpha(x, y)=\operatorname{softmax}<em>{y}\left(v^{\top} \tanh \left(W</em>{s}^{\top} x+W_{d}^{\top} y\right)\right) $$</p>
+<p>$h_{i}^{(\mathrm{tmp})}=\tanh \left(W^{(t)^{\top}} \sum_{j \in \mathcal{N}(i) \cup{i}} \alpha\left(h_{i}^{(t)}, h_{j}^{(t)}\right) \cdot h_{j}^{(t)}\right)<br>$</p>
+<p>$\alpha(x, y)=\operatorname{softmax}<em>{y}\left(v^{\top} \tanh \left(W</em>{s}^{\top} x+W_{d}^{\top} y\right)\right)<br>$</p>
 <p>本质来讲，这里是一个去掉了 multi-head 机制的 GAT。</p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-61803B64-E193-4C1F-9686-40A47DB9D1FF.png" alt="61803B64-E193-4C1F-9686-40A47DB9D1FF"></p>
 <p>自适应深度函数，本质上就是一个 LSTM，并且这里并没有依赖传统 LSTM 的循环输入，而是只有一次输入。主要利用的是它的存储。其中最重要的公式是最后一个，输出的节点的表示等于存储于 LSTM memory C 的信息和提取和过滤。而提取和过滤的控制是由广度函数的输入决定的。</p>
-<p>$$ \begin{array}{ll}{i_{i}=\sigma\left(W_{i}^{(t)^{\top}} h_{i}^{(\operatorname{tm} \mathbf{p})}\right),} &amp; {f_{i}=\sigma\left(W_{f}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right)} \ {o_{i}=\sigma\left(W_{o}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right),} &amp; {\tilde{C}=\tanh \left(W_{c}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right)} \ {C_{i}^{(t+1)}=f_{i} \odot C_{i}^{(t)}+i_{i} \odot \tilde{C}}\end{array} $$</p>
-<p>论文仅给出了 Adaptive Path Layer，而没有模型的结构图。这里根据对文章的理解画出神经网络框架。文章提出两个框架，一个是直接将 Adaptive Path Layer 循环 T 次，那么将 t-hop 的节点信息的交互可以融合起来。另一个是 GeniePath-lazy，区别在在于先只过广度函数，得到 $(\left{h_{i}^{(0)}, \dots, h_{i}^{(t)}, \ldots, h_{i}^{(T)}\right} $ 再整体输入到深度函数中。</p>
+<p>$ \begin{array}{ll}{i_{i}=\sigma\left(W_{i}^{(t)^{\top}} h_{i}^{(\operatorname{tm} \mathbf{p})}\right),} &amp; {f_{i}=\sigma\left(W_{f}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right)} \ {o_{i}=\sigma\left(W_{o}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right),} &amp; {\tilde{C}=\tanh \left(W_{c}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right)} \ {C_{i}^{(t+1)}=f_{i} \odot C_{i}^{(t)}+i_{i} \odot \tilde{C}}\end{array}$</p>
+<p>论文仅给出了 Adaptive Path Layer，而没有模型的结构图。这里根据对文章的理解画出神经网络框架。文章提出两个框架，一个是直接将 Adaptive Path Layer 循环 T 次，那么将 t-hop 的节点信息的交互可以融合起来。另一个是 GeniePath-lazy，区别在在于先只过广度函数，得到 $\left{h_{i}^{(0)}, \dots, h_{i}^{(t)}, \ldots, h_{i}^{(T)}\right}$ ，再整体输入到深度函数中。</p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-F5A6DF81-8E7A-4D88-9364-06CD930006C7.png" alt="F5A6DF81-8E7A-4D88-9364-06CD930006"></p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-CE789FEA-A1C5-47EC-81BC-06C7A2FB1B28.png" alt="CE789FEA-A1C5-47EC-81BC-06C7A2FB1B28"></p>
 <p>下面列出文中使用的数据信息。</p>
@@ -474,7 +474,7 @@
 <p>我们能看到 GeniePath 在蛋白质交互网络数据 PPI 上的表现显著强于其他算法，我猜想其中的原因与 PPI 的数据特点有关。在文章 <a href="https://arxiv.org/abs/1802.09691" target="_blank" rel="noopener">Link Prediction Based on Graph Neural Networks</a> 有这样一段话。“the common neighbor heuristic assumes that two nodes are more likely to connect if they have many common neighbors. This assumption may be correct in social networks, but is shown to fail in protein-protein interaction (PPI) networks –two proteins sharing many common neighbors are actually less likely to interact” ，一般情况下，我们会假设两个节点有更多的共同邻居，它们会倾向于更加相似，但是在蛋白质中，如果两个蛋白质有越多的共同节点，它们更倾向于不发生反应。GeniePath 通过 LSTM 组件融合了图中的高阶邻居信息，使得得到更高的准确率。</p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591954218348.jpg" alt=""></p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591954422407.jpg" alt=""></p>
-<p>GeniePath 的 PyTorch 复现，后续会发到 <a href="https://shawnwang.tech，" target="_blank" rel="noopener">https://shawnwang.tech，</a> <a href="https://github.com/shawnwang-tech/GeniePath-pytorch。" target="_blank" rel="noopener">https://github.com/shawnwang-tech/GeniePath-pytorch。</a> 感兴趣的朋友可以关注。</p>
+<p>GeniePath 的 PyTorch 复现已经发到 <a href="https://github.com/shawnwang-tech/GeniePath-pytorch。" target="_blank" rel="noopener">https://github.com/shawnwang-tech/GeniePath-pytorch。</a> 并且提交到 PyG 源码，<a href="https://github.com/rusty1s/pytorch_geometric/blob/master/examples/geniepath.py" target="_blank" rel="noopener">https://github.com/rusty1s/pytorch_geometric/blob/master/examples/geniepath.py</a></p>
 
       
     </div>
