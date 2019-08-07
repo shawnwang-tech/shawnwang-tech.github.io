@@ -136,7 +136,7 @@
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-08-06-15651005876619.jpg">
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-08-06-15651006264074.jpg">
 <meta property="og:image" content="http://image.qiniu.shawnwang.tech/2019-08-06-15651006313919.jpg">
-<meta property="og:updated_time" content="2019-08-06T16:48:31.922Z">
+<meta property="og:updated_time" content="2019-08-07T11:08:47.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ST-MGCN：基于时空多图卷积网络的网约⻋需求量预测">
 <meta name="twitter:description" content="ST-MGCN 是滴滴出行 AI Lab 发表于 AAAI 2019 的一种基于时空多图卷积网络的网约⻋需求量预测模型。区域级需求预测是网约车服务的关键技术。准确的网约车需求量预测可以指导车辆的调度，提高车辆的利用率，减少等待时间，以及缓解交通拥堵。区域之间所存在复杂的时空依赖关系使得这个问题具有很大挑战。已有方法主要关注于建模相邻区域在空间上的欧式相关性（Euclidean correlatio">
@@ -475,7 +475,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-08-07 00:48:31" itemprop="dateModified" datetime="2019-08-07T00:48:31+08:00">2019-08-07</time>
+                <time title="Modified: 2019-08-07 19:08:47" itemprop="dateModified" datetime="2019-08-07T19:08:47+08:00">2019-08-07</time>
               
             
           </span>
@@ -538,6 +538,7 @@
 
       
         <p>ST-MGCN 是滴滴出行 AI Lab 发表于 AAAI 2019 的一种基于时空多图卷积网络的网约⻋需求量预测模型。区域级需求预测是网约车服务的关键技术。准确的网约车需求量预测可以指导车辆的调度，提高车辆的利用率，减少等待时间，以及缓解交通拥堵。区域之间所存在复杂的时空依赖关系使得这个问题具有很大挑战。已有方法主要关注于建模相邻区域在空间上的欧式相关性（Euclidean correlations），而作者发现距离较远区域之间的非欧相关性也对预测至关重要。本文提出了时空多图卷机网络 spatiotemporal multi-graph convolution network (ST-MGCN)，一个新的用于网约车需求预测的深度学习模型。作者首先将区域间的非欧相关性建模到多个图，然后用多图卷积（multi-graph convolution）来建模其相关性。用全局上下文信息（global contextual information）来建模时序信息，并进一步提出了上下文门控循环神经网络模型（contextual gated recurrent neural network），给历史数据分配权重。在两个数据集上表现强于已有算法的 10% 以上。</p>
+<a id="more"></a>
 <h2 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h2><p>据 Uber 统计，2018年，全年的网约车使用次数达180亿次，超过全球人口的两倍。准确的网约车订单预测，能够更好的调度车辆，提高车辆的利用率，缓解交通拥堵，具有重要的经济和社会意义。</p>
 <p>网约车需求量预测问题可以通过其数据建模方式来理解。以1小时为时间单位，1km*1km 的网格为空间单位，某城市某个小时订单量可以用如下所示的2d格点图片来表示，每个格点的数值是在该时间段内该区域所产生的滴滴打车的订单数的总和。那么所谓网约车需求量预测，就是已知过去几个小时每个格点的订单数，预测未来的订单数。</p>
 <p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650709677184.jpg" alt="北京区域的格点图"></p>
@@ -634,15 +635,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/05/29/geniepath/" rel="next" title="GeniePath：自适应感受路径的图神经网络">
+                <i class="fa fa-chevron-left"></i> GeniePath：自适应感受路径的图神经网络
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/29/geniepath/" rel="prev" title="GeniePath：自适应感受路径的图神经网络">
-                GeniePath：自适应感受路径的图神经网络 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
