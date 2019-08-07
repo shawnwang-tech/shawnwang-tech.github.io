@@ -518,46 +518,17 @@
       
         
           
-            <h1 id="GeniePath：自适应感受路径的图神经网络"><a href="#GeniePath：自适应感受路径的图神经网络" class="headerlink" title="GeniePath：自适应感受路径的图神经网络"></a>GeniePath：自适应感受路径的图神经网络</h1><p>GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path layer）包括两个互补的功能单元，分别用来进行广度与深度的探索，前者用来学习一阶邻域节点的权重，后者用来提取和过滤高阶邻域内汇聚的信息。在直推（transductive）和归纳（inductive）两种学习任务的实验中，均达到了 state-of-the-art 的效果。</p>
-<h2 id="图表示学习与图神经网络"><a href="#图表示学习与图神经网络" class="headerlink" title="图表示学习与图神经网络"></a>图表示学习与图神经网络</h2><p>图（Graph），或称为（网络，Network），是一种由对象（节点，node）和关系（连边，edge）构成的数据结构。 <a href="https://arxiv.org/pdf/1812.08434.pdf" target="_blank" rel="noopener">Graph Neural Networks: A Review of Methods and Applications</a> 生活中很多数据或系统可以被建模成图，例如社交网络，蛋白质-蛋白质交互网络，疾病传播网络，知识图谱等。图强大到建模和表达能力也吸引了越来越多的学者的关注。与我们熟知的基于格点（2D gird）的图像数据不同，图是非欧数据（non-Euclidean data），为了能够用神经网络进行运算，我们需要先得到节点和连边的一种向量表示，这项技术被称为图表示学习（graph representation learning），或者叫网络嵌入（network embedding），下文不做区分。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591839602150.jpg" alt=""></p>
-<p>受到到自然语言处理中 word2vec <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a> 的启发，诞生了 DeepWalk <a href="https://arxiv.org/abs/1403.6652" target="_blank" rel="noopener">Deepwalk: Online learning ofsocialrepresentations</a>、node2vec <a href="https://arxiv.org/abs/1607.00653" target="_blank" rel="noopener">node2vec: Scalable feature learning for networks</a>、LINE <a href="https://arxiv.org/abs/1503.03578" target="_blank" rel="noopener">LINE: Large-scale Information Network Embedding</a> 等网络嵌入算法，它们的思路是将节点类比为自然语言中的单词，在图上生成一些经过随机游走（Random Walk）产生的节点序列，把这些序列看成句子。类似于 word2vec 的思想，每个节点都可以用处于其上下文（context）的节点来表示，得到一个长度远小于图上节点数的低维稠密的实值向量。该向量编码了（encode） 图的结构信息，我们可以利用该向量做节点分类、链路预测等下游任务。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591857996169.jpg" alt=""></p>
-<p>需要注意的是，很多人（尤其是做计算机视觉的人）可能对嵌入这项技术并不熟悉。因为图像天然就是用低维稠密的实值向量来表示的。图像上，每个像素点都对应一个 RGB 值，每个 RGB 通道都是 [0, 255] 的数。此外，颜色空间有多种，比如 RGB、HSV 等，我们会在不同的任务中选取更适合的颜色表示方式。（用 Photoshop 调过照片的朋友可能会更有体会。）</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591860374794.jpg" alt=""></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591860533237.jpg" alt=""></p>
-<p>同样的道理，嵌入得到的向量化的节点和连边的表示也是为了图上的下游任务来服务的。而基于随机游走的方法得到的表示信息往往无法针对具体任务进行优化，此外，随机游走算法只能得到图上的结构信息，而无法融合节点的特征信息。因此，研究人员又提出了基于神经网络架构的图表示学习，称为图神经网络 Graph Neural Network （GNN）。感兴趣的朋友可以阅读相关的综述文章。<a href="https://towardsdatascience.com/a-gentle-introduction-to-graph-neural-network-basics-deepwalk-and-graphsage-db5d540d50b3" target="_blank" rel="noopener">A Gentle Introduction to Graph Neural Network</a> ，<a href="https://arxiv.org/abs/1812.08434" target="_blank" rel="noopener">Graph Neural Networks: A Review of Methods and Applications</a>，<a href="https://arxiv.org/abs/1901.00596" target="_blank" rel="noopener">A Comprehensive Survey on Graph Neural Networks</a>。这些算法的基本思路是，针对特定下游任务用端到端 (end-to-end) 的方式进行学习训练，并且可以融合节点的特征信息，比如 <a href="https://relational.fit.cvut.cz/dataset/CORA" target="_blank" rel="noopener">cora</a> 引文数据集中，节点的结构信息包含了文章的摘要，这对于做节点分类和链路预测会起到重要作用。我们知道，在 CNN 中，卷积核所定义的是对图像上每个像素点与其周围像素点进行信息交互的方式。同样，GNN中，每个节点也有领域的概念（由图的结构信息所定义），图上的卷积核也是要进行节点和其邻居的信息交互。这里，卷积核的大小往往是固定的，受限于运算复杂度，我们一般使用一阶或者二阶领域。</p>
-<p>有代表性的 GNN 算法包括，GCN <a href="https://arxiv.org/abs/1609.02907" target="_blank" rel="noopener">Semi-supervised classification with graph convolutional networks</a>, GAT <a href="https://arxiv.org/abs/1710.10903" target="_blank" rel="noopener">Graph Attention Networks</a>，GraphSAGE <a href="https://arxiv.org/abs/1706.02216" target="_blank" rel="noopener">Inductive Representation Learning on Large Graphs</a>。此外，开源社区也出现了一些 GNN 的开发框架，其中，<a href="https://rusty1s.github.io/pytorch_geometric/build/html/index.html" target="_blank" rel="noopener">PyTorch Geometric (PyG)</a> 基于 PyTorch 实现，熟悉 PyTorch 的人可以很舒服地使用 PyG 进行 GNN 算法的开发。PyG 提供了一个基础组件，MessagePassing。它认为像 GCN、GAT、GraphSAGE 等算法可以抽象为如图所示的组件。每一层图卷积层要做的就是和相应领域 $j \in \mathcal{N}(i)$ 内的节点进行信息的交互。不同的算法的区别在于其所定义的消息的映射方式和领域的选取不用。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591881211273.jpg" alt=""></p>
-<h2 id="可变形卷积核"><a href="#可变形卷积核" class="headerlink" title="可变形卷积核"></a>可变形卷积核</h2><p><a href="https://arxiv.org/abs/1703.06211" target="_blank" rel="noopener">Deformable Convolutional Networks</a> ，这是一篇有趣的文章，我们以往熟知的卷积核是下图左上角所示的那种规则形状的，而这篇文章提出了一种可变形卷积核，它会根据具体的任务和输入数据而改变卷积核的形状，也就是感受野。并且在目标检测任务中取得了比较好的效果。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591884128930.jpg" alt=""></p>
-<p>GeniePath 的作者可能是（论文中没有提到）受到了这篇文章的启发，将这个 idea 引入到了 Graph 中。提出了自适应感受野的 GNN 算法。但是该算法的并不是通过调整节点的领域来实现的，而将距离多跳（k-hop）的节点的信息存储在 LSTM 的 memory 中，由神经网络进行学习自动判断哪些信息对于自己完成下游任务是有利的，而进行提取和过滤。</p>
-<h2 id="Permutation-Invariant"><a href="#Permutation-Invariant" class="headerlink" title="Permutation Invariant"></a>Permutation Invariant</h2><p>这里提到了一个概念，排列不变性（permutation invariant）。这里[DeepSets: Modeling Permutation Invariance] (<a href="https://www.inference.vc/deepsets-modeling-permutation-invariance/" target="_blank" rel="noopener">https://www.inference.vc/deepsets-modeling-permutation-invariance/</a>) 给出了一个通俗的解释。</p>
-<p>$f(a, b, c)=f(a, c, b)=f(b, a, c)=\dots$ 同样的参数输入到函数中，它们的排列顺序并不影响结果。数据结构——集合（set）会用到这样的不变性，相应地，那些在建模中用到集合概念的问题都要遵循排列不变性，例如点云，多主体强化学习，图片场景中多个目标的集合等。在 DeepMind 文章 <a href="https://arxiv.org/abs/1904.12787" target="_blank" rel="noopener">Graph Matching Networks for Learning the Similarity of Graph Structured Objects</a> 中也有提到排序不变性。”In the past few years graph neural networks (GNNs) have emerged as an effective class of models for learning representations of structured data and for solving various supervised prediction problems on graphs. <strong><em>Such models are invariant to permutations of graph elements</em></strong> by design and compute graph node representations through a propagation process which iteratively aggregates local structural information. These node representations are then used directly for node classification, or pooled into a graph vector for graph classification.<br>“<br>本文在算法部分（Proposed Approaches）详细介绍了排列不变性。函数空间要满足图数据所需要的排列不变性。我们要学的是一个函数 f，将图 G 映射到嵌入 H。我们要假设的是该 f 具有排列不变性，学习任务与邻居节点的顺序是无关的。文中用下面公式来定义聚合（aggregator）函数 f 的这个性质，其中 sigma 表示的是任意的排列。</p>
-<p>$\begin{array}{l}{f\left(\left{h_{1}, \ldots, h_{j}, \ldots\right} | j \in \mathcal{N}(i)\right)} \ {\quad=f\left(\left{h_{\sigma(1)}, \ldots, h_{\sigma(j)}, \ldots\right} | j \in \mathcal{N}(i)\right)}\end{array}<br>$。然后提到了一个定理，当且仅当函数 f 可以被分解为 $\rho\left(\sum_{j \in \mathcal{N}(i)} \phi\left(h_{j}\right)\right)<br>$ 其中 phi 和 rho 是两个映射。那么 f 是具有排列不变形的。并且两个具有排列不变形的函数的复合函数 $g \circ f$ 可以等价于 g(f(x))。也是满足排列不变性的，因此，我们可以将函数进行堆叠来设计神经网络。GraphSAGE 提供 LSTM 的聚合器，这种聚合器是不具有 Permutation Invariant 的，因为 LSTM 接收的是遍历节点的隐变量序列，排序是敏感的。此外，这里的 Permutation Invariant 也指图是静态的，不随时间演化。 因为文章中提到 “This is in opposition to temporal graphs.”</p>
-<h2 id="GeniePath-Algorithm"><a href="#GeniePath-Algorithm" class="headerlink" title="GeniePath Algorithm"></a>GeniePath Algorithm</h2><p>Adaptive Path Layer 是文章的核心内容，相比其他算法中使用事先定义好的路径（pre-defined paths），例如一阶邻居等，Adaptive Path Layer 目标是自学习感受路径，信号在学到的路径上传播。这个问题可以等效于学习每个节点的一个合理的子图，该子图包括两部分，广度方向上给出一阶邻居中节点的权重，深度方向上 t 跳范围内重要的邻居。自适应广度函数定义为 $\phi\left(A, H^{(t)} ; \Theta\right)$ 其中 theta 代表参数。H 代表的是节点的嵌入（或者叫隐状态表示）。自适应深度函数定义为，$\varphi\left({h_{i}^{(t)}}\left|\left{h_{i}^{(\tau)} | \tau \in{t-1, \ldots, 0}\right} ; \Phi\right)\right. $ 其中，Phi 代表参数。</p>
-<p>我们可以将本文和 GAT 或者 GraphSAGE 等常用的非频域的 GNN 框架的区别认为是在它们的基础上加了 memory（通过 LSTM 实现）。存储通过一阶邻域进行的信息传递得到的高阶领域节点的信息。所谓的自适应，自学习，其实就是通过 LSTM 的门对 LSTM 的 memory 所存储的高阶领域信息的提取和过滤 （分别对应遗忘门和输出门）所体现的。而一阶邻域和高阶领域的信息交互体现在 LSTM 的输入门。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-397B5B49-D760-4D96-9D41-23114F54934B.png" alt="397B5B49-D760-4D96-9D41-23114F54934B"></p>
-<p>注意，广度函数的输出的 H 上标是 tmp，只有将 H_tmp 再输入到深度函数中，才达到一个 epoch 的训练。</p>
-<p>$h_{i}^{(\mathrm{tmp})}=\tanh \left(W^{(t)^{\top}} \sum_{j \in \mathcal{N}(i) \cup{i}} \alpha\left(h_{i}^{(t)}, h_{j}^{(t)}\right) \cdot h_{j}^{(t)}\right)<br>$</p>
-<p>$\alpha(x, y)=\operatorname{softmax}<em>{y}\left(v^{\top} \tanh \left(W</em>{s}^{\top} x+W_{d}^{\top} y\right)\right)<br>$</p>
-<p>本质来讲，这里是一个去掉了 multi-head 机制的 GAT。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-61803B64-E193-4C1F-9686-40A47DB9D1FF.png" alt="61803B64-E193-4C1F-9686-40A47DB9D1FF"></p>
-<p>自适应深度函数，本质上就是一个 LSTM，并且这里并没有依赖传统 LSTM 的循环输入，而是只有一次输入。主要利用的是它的存储。其中最重要的公式是最后一个，输出的节点的表示等于存储于 LSTM memory C 的信息和提取和过滤。而提取和过滤的控制是由广度函数的输入决定的。</p>
-<p>$ \begin{array}{ll}{i_{i}=\sigma\left(W_{i}^{(t)^{\top}} h_{i}^{(\operatorname{tm} \mathbf{p})}\right),} &amp; {f_{i}=\sigma\left(W_{f}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right)} \ {o_{i}=\sigma\left(W_{o}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right),} &amp; {\tilde{C}=\tanh \left(W_{c}^{(t)^{\top}} h_{i}^{(\mathrm{tmp})}\right)} \ {C_{i}^{(t+1)}=f_{i} \odot C_{i}^{(t)}+i_{i} \odot \tilde{C}}\end{array}$</p>
-<p>论文仅给出了 Adaptive Path Layer，而没有模型的结构图。这里根据对文章的理解画出神经网络框架。文章提出两个框架，一个是直接将 Adaptive Path Layer 循环 T 次，那么将 t-hop 的节点信息的交互可以融合起来。另一个是 GeniePath-lazy，区别在在于先只过广度函数，得到 $\left{h_{i}^{(0)}, \dots, h_{i}^{(t)}, \ldots, h_{i}^{(T)}\right}$ ，再整体输入到深度函数中。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-F5A6DF81-8E7A-4D88-9364-06CD930006C7.png" alt="F5A6DF81-8E7A-4D88-9364-06CD930006"></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-CE789FEA-A1C5-47EC-81BC-06C7A2FB1B28.png" alt="CE789FEA-A1C5-47EC-81BC-06C7A2FB1B28"></p>
-<p>下面列出文中使用的数据信息。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591955336710.jpg" alt=""></p>
-<p>下面是文章给出的实验结果，对比的算法包括 MLP，node2vec，以及几个经典的 GCN 算法。其中 MLP 输入的仅是节点的特征信息，无法利用图结构信息。而 node2vec 输入的仅是图结构信息，无法利用节点的特征信息。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591954676998.jpg" alt=""></p>
-<p>我们能看到 GeniePath 在蛋白质交互网络数据 PPI 上的表现显著强于其他算法，我猜想其中的原因与 PPI 的数据特点有关。在文章 <a href="https://arxiv.org/abs/1802.09691" target="_blank" rel="noopener">Link Prediction Based on Graph Neural Networks</a> 有这样一段话。“the common neighbor heuristic assumes that two nodes are more likely to connect if they have many common neighbors. This assumption may be correct in social networks, but is shown to fail in protein-protein interaction (PPI) networks –two proteins sharing many common neighbors are actually less likely to interact” ，一般情况下，我们会假设两个节点有更多的共同邻居，它们会倾向于更加相似，但是在蛋白质中，如果两个蛋白质有越多的共同节点，它们更倾向于不发生反应。GeniePath 通过 LSTM 组件融合了图中的高阶邻居信息，使得得到更高的准确率。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591954218348.jpg" alt=""></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-05-30-15591954422407.jpg" alt=""></p>
-<p>GeniePath 的 PyTorch 复现已经发到 <a href="https://github.com/shawnwang-tech/GeniePath-pytorch" target="_blank" rel="noopener">https://github.com/shawnwang-tech/GeniePath-pytorch</a> 并且提交到 PyG 源码，<a href="https://github.com/rusty1s/pytorch_geometric/blob/master/examples/geniepath.py" target="_blank" rel="noopener">https://github.com/rusty1s/pytorch_geometric/blob/master/examples/geniepath.py</a></p>
-
+          GeniePath：自适应感受路径的图神经网络GeniePath，蚂蚁金服发表于 KDD 2018，一种可扩展的能够学习自适应感受路径的图神经网络框架。定义在具有排列不变性的图数据上（permutation invariant graph data）。其自适应路径层（adaptive path la
+          ...
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/29/geniepath/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
@@ -738,67 +709,17 @@
       
         
           
-            <p>ST-MGCN 是滴滴出行 AI Lab 发表于 AAAI 2019 的一种基于时空多图卷积网络的网约⻋需求量预测模型。区域级需求预测是网约车服务的关键技术。准确的网约车需求量预测可以指导车辆的调度，提高车辆的利用率，减少等待时间，以及缓解交通拥堵。区域之间所存在复杂的时空依赖关系使得这个问题具有很大挑战。已有方法主要关注于建模相邻区域在空间上的欧式相关性（Euclidean correlations），而作者发现距离较远区域之间的非欧相关性也对预测至关重要。本文提出了时空多图卷机网络 spatiotemporal multi-graph convolution network (ST-MGCN)，一个新的用于网约车需求预测的深度学习模型。作者首先将区域间的非欧相关性建模到多个图，然后用多图卷积（multi-graph convolution）来建模其相关性。用全局上下文信息（global contextual information）来建模时序信息，并进一步提出了上下文门控循环神经网络模型（contextual gated recurrent neural network），给历史数据分配权重。在两个数据集上表现强于已有算法的 10% 以上。</p>
-<h2 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h2><p>据 Uber 统计，2018年，全年的网约车使用次数达180亿次，超过全球人口的两倍。准确的网约车订单预测，能够更好的调度车辆，提高车辆的利用率，缓解交通拥堵，具有重要的经济和社会意义。</p>
-<p>网约车需求量预测问题可以通过其数据建模方式来理解。以1小时为时间单位，1km*1km 的网格为空间单位，某城市某个小时订单量可以用如下所示的2d格点图片来表示，每个格点的数值是在该时间段内该区域所产生的滴滴打车的订单数的总和。那么所谓网约车需求量预测，就是已知过去几个小时每个格点的订单数，预测未来的订单数。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650709677184.jpg" alt="北京区域的格点图"></p>
-<p>实际上，直接做网约车需求量预测的文章并不多，但这个问题可以归结为交通流预测，并且本文的对比算法也是交通流预测模型，在同一网约车数据集上的表现。此外，交通流预测属于城市计算问题（urban computing）<a href="https://dl.acm.org/citation.cfm?id=2629592" target="_blank" rel="noopener">Yu Zheng. 2014. Urban Computing Concepts, Methodologies, and Applications</a>。这个概念由当时还在微软亚洲研究院的<a href="https://www.msra.cn/zh-cn/research/urban-computing" target="_blank" rel="noopener">郑宇</a>提出。与我们生活息息相关的很多问题都可以归结为城市计算问题。比如车辆调度问题，输电网优化，物流及供应链管理，雾霾预测等。它们的特点是同时具有时间和空间两个维度的信息。近年来大火的图神经网络 GNN 相当于提供了一种新的建模和解决时空数据预测的手段。</p>
-<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>本文要解决的问题是，如何能够更好的建模多个区域之间所存在的非欧且多模态的时间和空间相关性，以实现高准确率的网约车需求量预测。</p>
-<p>问题的数学表述如下，输入连续 T 个时刻的格点集合 X（格点的值为订单数），输出下一时刻的订单数，通过训练学习得到该映射函数 f。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650785388351.jpg" alt="-w312"></p>
-<p>这里的多模态可以理解为多重维度的关系。如下图所示，图中区域1和区域2在空间上是相邻关系，他们可能会有相似的约车量。区域1和区域3在功能上是相似的，可能在用车的 pattern 上存在比较高的相似性。区域4与区域1在同一条路旁边，同理，他们也会存在某种约车的相似性。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650772164296.jpg" alt="不同区域间所存在的相关性"></p>
-<p>此外，订单数还与时间紧密相关，比如早晚高峰，节假日等，会对用车数产生比较大的影响，且会呈现某种周期性。所以，作者总结了这个问题所面临的两个挑战。空间上，需要学习区域间存在的多模态非欧相关性。时间上，需要学习复杂的多个时刻的时间依赖关系。</p>
-<p>时空数据预测的相关工作可以分为两类：1. 将数据建模成为 2d image 上的格点，使用 CNN 的方法进行预测；2. 将数据建模到 graph 的节点上，基于图的方法进行预测。建模称为 2d image 的方法无法处理非欧数据（CNN 所处理的规整的网格是欧式空间）。假如就这个问题而言，我们建模为 1km*1km 的网格，那么整个城市不同区域使用的分辨率都是相同的，如果我们希望在市中心用更高的分辨率，郊区用更低的分辨率，或者加入某些兴趣点，这种方法是无法实现的。而现有基于 graph 的方法，虽然在区域建模上具有很高灵活性，但是无法建模上述区域间多模态的相关性。</p>
-<h2 id="算法框架"><a href="#算法框架" class="headerlink" title="算法框架"></a>算法框架</h2><p>作者基于对网约车需求量预测问题的理解以及先验知识，设计了如下的算法框架。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650784700600.jpg" alt="算法框架"></p>
-<p>主要分为三部分。</p>
-<ol>
-<li>将每一帧的数据建模成为三张 graph。每张 graph 上的节点相同，即城市的网格化划分。连边通过如下图所示的规则进行构建。根据不同维度的相关性（邻域信息、功能相似度、交通连通性）确定节点之间的连边值。</li>
-<li>时间维度的预测：将T个历史时间步的信息融合到一张图上。</li>
-<li>空间维度的预测：将一个时刻的不同的相关性的图合成一个图。这就是论文题目中所说的多图卷积。</li>
-</ol>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650788389857.jpg" alt="连边关系构建方法"></p>
-<h2 id="Contextual-Gated-Recurrent-Neural-Network-CGRNN"><a href="#Contextual-Gated-Recurrent-Neural-Network-CGRNN" class="headerlink" title="Contextual Gated Recurrent Neural Network (CGRNN)"></a>Contextual Gated Recurrent Neural Network (CGRNN)</h2><p>这是算法框架中的第二步，将 T个时间步的历史数据融合为一张图，这里所谓的 Contextual Gated 是指将历史数据每一帧通过图卷积网络进行数据融合，并且通过全局 pooling 得到该小时的全局信息。这个全局信息再与原来的 T个时间步的数据做点乘，得到了带权重的历史数据。然后迭代地输入到 RNN 中进行时间维度的信息融合，最终得到一张图。这里的 RNN 是权值共享的，也就是对于图上的每个顶点都过同一个 RNN，它们的所训练的是一套参数（工程上是可以实现的）。这样的好处有两点：1. 学习更加 general 的时序维度的汇聚方法，2. 减少模型复杂程度，使得更容易训练。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650804542252.jpg" alt="-w576"></p>
-<p>pooling 操作如下所示，将 t 时刻 graph 上所有节点的值都加起来，然后除以节点的个数。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650810664793.jpg" alt="-w348"></p>
-<p>这里需要注意的点是，每一帧数据做图卷积的方法是使用 k-ordered ChebNet。这个方法与我们熟知的图卷积网络 GCN 的区别是，GCN 可以简单地认为是 1-ordered ChebNet，只是汇聚一阶邻居。如文中给出的示意图所示。黑色是中心节点，黄色是 1阶邻居，红色是 2阶邻居。通过 k-ordered ChebConv，可以实现 k 阶领域的信息交互。使用 k 层的 GCN 堆叠也可以实现 k 阶邻域信息角度，但是随着层数增加，训练难度加大。所以，这可能是作者做模型选择的考虑点之一。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650803631639.jpg" alt="-w524"></p>
-<p>下面是相关的运算公式：</p>
-<p>拉普拉斯矩阵<br><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650991889604.jpg" alt=""></p>
-<p>GCN<br><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650992134412.jpg" alt=""></p>
-<p>k-ordered ChebConv<br><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650992243975.jpg" alt=""></p>
-<p>对 GCN 也不太熟悉的同学可以这样通俗的理解 GCN 的作用。每个 graph，都有对应的表示节点连接关系的邻接矩阵，还有数值在主对角线上，表示节点一阶邻居个数的度矩阵。拉普拉斯矩阵是通过邻接矩阵、度矩阵，用上面图中的公式计算得到的一个方阵。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650792189954.jpg" alt="-w886"></p>
-<p>在图卷积中，拉普拉斯矩阵中的元素，用来充当节点之间信息汇聚时，邻居节点的特征向量相加中前面对应的权重。下图是算法框架中第三步的内容（这两步都用到 k-ordered ChebConv）。其中不考虑多图的汇聚，花括号中的内容就是一个图上进行卷积的操作。第一个方阵就是拉普拉斯矩阵，第二个矩阵是这本卷积层的输入的邻居节点的特征向量（维度是 V*P，V 是节点个数，编号等同于拉普拉斯矩阵中节点编号，也就是节点在行向量的排序，P 是特征向量维度）。这两个矩阵进行矩阵乘法，得到的就是每个节点汇聚了其邻居节点特征的新的特征信息。这里的邻居节点根据算法的 k-ordered 所定义的 k 而不同，而范围不同，且会体现到拉普拉斯矩阵上。第三个矩阵 W 起到的作用等价于 MLP，做特征向量维度的变换。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15650995273537.jpg" alt=""></p>
-<p>感兴趣的同学可以阅读下面资料获取更详细的信息： <a href="https://tkipf.github.io/graph-convolutional-networks/" target="_blank" rel="noopener">GCN 作者 Kipf 的blog</a> <a href="https://arxiv.org/abs/1606.09375" target="_blank" rel="noopener">Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering</a>，<a href="https://www.bilibili.com/read/mobile/2855698" target="_blank" rel="noopener">回顾频谱图卷积的经典⼯工作: 从ChebNet到GCN</a>，<a href="https://baike.baidu.com/item/%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%9F%A9%E9%98%B5/5583042" target="_blank" rel="noopener">拉普拉斯矩阵</a>，</p>
-<h2 id="Multi-Graph-Conv"><a href="#Multi-Graph-Conv" class="headerlink" title="Multi-Graph Conv"></a>Multi-Graph Conv</h2><p>算法的第三步所进行的是多图的信息汇聚。下图是以单个节点的视角来看这个算法的运行。首先，每个节点先各自通过 k-ordered ChebConv，然后在进行多图汇聚，汇聚操作的单位是节点。在这里是将前面分别建模了邻居信息、功能相似度、交通连通性的三个图进行汇聚。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651000175877.jpg" alt=""></p>
-<p>下图是具体的多图汇聚的公式，括号内就是普通的 k阶 ChebConv，汇聚的方法可以是加和、平均、基于 attention 的汇聚等。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651000954937.jpg" alt=""></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651001187528.jpg" alt=""></p>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>模型基于滴滴打车在北京和上海两个城市的历史订单数据进行实验。对比了一些基本的时序预测（如果不考虑图上节点之间的空间相关性，可以看成时序预测问题）模型，基于 image 建模的算法，基于 graph 的算法等。均得到了 10% 的提升。并且进一步试验了去掉 multi-graph 中的某个图，以及替换时间维度信息的汇聚方法，均证明当前的模型是最好的。</p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651004604632.jpg" alt=""></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651005876619.jpg" alt=""></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651006264074.jpg" alt=""></p>
-<p><img src="http://image.qiniu.shawnwang.tech/2019-08-06-15651006313919.jpg" alt=""></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>作者提到，接下来会将算法推广到其他的时空数据预测问题上，比如交通流、人流、雾霾预报等，以及提高模型的能力，以满足多个时间步的预测需求。此外，笔者认为，基于该文章的多图数据融合机制，增加高精度的降水短临预报（例如，提供分钟级、街道级降水预报的彩云天气，<a href="http://caiyunapp.com/" target="_blank" rel="noopener">http://caiyunapp.com/</a> ）可以显著提升订单数的预测准确性。本文提到的 k-order ChebNet 和上次读书会分享的 <a href="https://zhuanlan.zhihu.com/p/67545519" target="_blank" rel="noopener">GeniePath：自适应感受路径的图神经网络</a> <a href="https://github.com/shawnwang-tech/GeniePath-pytorch" target="_blank" rel="noopener">GeniePath 复现代码 Github 链接</a>，都是可以进行 k-hop 邻居信息汇聚的方法，可以简单地认为 GeniePath 是增加了 LSTM 的存储 cell 的 GCN，以实现文章提到的自适应感受野的目的。本文的代码复现，后续会发到的链接（<a href="https://github.com/shawnwang-tech/ST-MGCN-pytorch" target="_blank" rel="noopener">https://github.com/shawnwang-tech/ST-MGCN-pytorch</a> ）。感兴趣的同学可以 star 关注。</p>
-<h2 id="B-站视频链接"><a href="#B-站视频链接" class="headerlink" title="B 站视频链接"></a>B 站视频链接</h2><p>读书会视频分享链接：</p>
-<p>集智俱乐部图网络论文读书会22期 | 基于时空多图卷积网络的网约车需求量预测 <a href="https://www.bilibili.com/video/av62438890/" target="_blank" rel="noopener">https://www.bilibili.com/video/av62438890/</a></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
-<li>作者个人主页：<a href="http://www-scf.usc.edu/~yaguang" target="_blank" rel="noopener">http://www-scf.usc.edu/~yaguang</a></li>
-<li>论文 pdf：<a href="http://www-scf.usc.edu/~yaguang/papers/aaai19_multi_graph_convolution.pdf" target="_blank" rel="noopener">http://www-scf.usc.edu/~yaguang/papers/aaai19_multi_graph_convolution.pdf</a></li>
-<li>slides：<a href="http://www-scf.usc.edu/~yaguang/papers/aaai19_multi_graph_convolution_slides.pdf" target="_blank" rel="noopener">http://www-scf.usc.edu/~yaguang/papers/aaai19_multi_graph_convolution_slides.pdf</a></li>
-<li>poster：<a href="http://www-scf.usc.edu/~yaguang/papers/aaai19_stmgcn_poster.pdf" target="_blank" rel="noopener">http://www-scf.usc.edu/~yaguang/papers/aaai19_stmgcn_poster.pdf</a></li>
-<li>echarts格点地图 <a href="https://echarts.baidu.com/examples/editor.html?c=map-bin" target="_blank" rel="noopener">https://echarts.baidu.com/examples/editor.html?c=map-bin</a></li>
-<li>郑宇：深度学习在时空数据中的应用 <a href="https://mp.weixin.qq.com/s?__biz=MjM5MTY5ODE4OQ==&amp;mid=2651447437&amp;idx=1&amp;sn=1828615f150fa97cf9e8e8c6e1aa7f99&amp;chksm=bd4cdcef8a3b55f900deb31ae9e83a64ffdb15e303058ca253299fb5b9c628712f5a5b29d1e2&amp;mpshare=1&amp;scene=1&amp;srcid=0806Pint9irNgzMNSR4655P3&amp;sharer_sharetime=1565072406729&amp;sharer_shareid=a28c12a5a2db91e29279078e3079dfed%23rd" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MjM5MTY5ODE4OQ==&amp;mid=2651447437&amp;idx=1&amp;sn=1828615f150fa97cf9e8e8c6e1aa7f99&amp;chksm=bd4cdcef8a3b55f900deb31ae9e83a64ffdb15e303058ca253299fb5b9c628712f5a5b29d1e2&amp;mpshare=1&amp;scene=1&amp;srcid=0806Pint9irNgzMNSR4655P3&amp;sharer_sharetime=1565072406729&amp;sharer_shareid=a28c12a5a2db91e29279078e3079dfed%23rd</a></li>
-<li>Junbo Zhang, Yu Zheng, Dekang Qi. AAAI 2017. Deep Spatio-Temporal Residual Networks for Citywide Crowd Flows Prediction <a href="https://arxiv.org/abs/1610.00081" target="_blank" rel="noopener">https://arxiv.org/abs/1610.00081</a>)</li>
-<li>回顾频谱图卷积的经典⼯工作: 从ChebNet到GCN <a href="https://www.bilibili.com/read/mobile/2855698" target="_blank" rel="noopener">https://www.bilibili.com/read/mobile/2855698</a></li>
-</ul>
-
+          ST-MGCN 是滴滴出行 AI Lab 发表于 AAAI 2019 的一种基于时空多图卷积网络的网约⻋需求量预测模型。区域级需求预测是网约车服务的关键技术。准确的网约车需求量预测可以指导车辆的调度，提高车辆的利用率，减少等待时间，以及缓解交通拥堵。区域之间所存在复杂的时空依赖关系使得这个问题具有很
+          ...
+          <!--noindex-->
           
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/05/29/stmgcn/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
         
       
     </div>
